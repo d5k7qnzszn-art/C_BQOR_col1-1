@@ -159,40 +159,28 @@ int RenderTitle(void)
     switch (a)
     {
     case 'w':
+    case 72: // ↑
         if (menu > 1)
         {
             menu = menu - 1;
         }
         break;
-
     case 's':
+    case 80: // ↓
         if (menu < 4)
         {
             menu = menu + 1;
         }
         break;
 
-    case 27:
+    case 27: // ESC
         isRunning = 0;
         break;
 
-    case 13:
-        if (menu == 1)
+    case 13: // ENTER
+        if (menu >= 1 && menu <= 4)
         {
-            return 1;
-        }
-        if (menu == 2)
-        {
-            return 2;
-        }
-        if (menu == 3)
-        {
-            return 3;
-        }
-
-        if (menu == 4)
-        {
-            return 4;
+            return menu;
         }
         break;
     }
@@ -250,11 +238,11 @@ int People(void)
         printf("\x1b[0m");
     }
     const char* team_text[] = {
-       " team 01 (ZERONE) 팀원들",
-       "마준서(202617166) : 총괄",
-       "백종화(202617139) : 코드",
-       "이인욱(202619389) : 코드",
-       "이준현(202619549) : 디자인"
+        " team 01 (ZERONE) 팀원들 ",
+        "마준서(202617166) : 총괄",
+        "백종화(202617139) : 코드",
+        "이인욱(202619389) : 코드",
+        "이준현(202619549) : 디자인"
     };
 
     int team_start_x = box_start_x + (box_width - 24) / 2;
@@ -288,25 +276,106 @@ int People(void)
 
 int Manual(void)
 {
-    system("cls");
-
-    move_cursor(52, 13);
-    printf("여기에 게임 설명 적기. 일단은 Backspace를 눌러서 메뉴로 가기지만 키 지정하기");
-
     int key = 0;
-
+    int Manual_page = 1;
+    system("cls");
     while (key != 8)
     {
-        key = _getch();
-
-        if (key == 27)
+        system("cls");
+        if (Manual_page == 1)
         {
+            move_cursor(107, 50);
+            printf("\033[1m다음장 (→ , D)\033[0m");
+
+            set_color(BG_COLOR_BRIGHTMAGENTA);
+            set_color(FONT_COLOR_WHITE);
+            move_cursor(48, 7);
+            printf("=========== 설명서 ===========");
+
+            set_color(BG_COLOR_BLACK);
+
+            set_color(FONT_COLOR_YELLOW);
+            move_cursor(43, 10);
+            printf("게임 제목 : 이걸 죽네");
+
+            set_color(FONT_COLOR_RED);
+            move_cursor(43, 12);
+            printf("HP");
+
+            set_color(FONT_COLOR_WHITE);
+            printf("가 0 이하가 되기 전까지 최대한 많은 턴을 버티는 게임입니다.");
+
+            move_cursor(43, 14);
+            printf("매 턴마다 2개 또는 3개의 선택지가 나옵니다.");
+
+            set_color(FONT_COLOR_WHITE);
+            move_cursor(43, 15);
+            printf("선택지 안의 숫자는 무작위로 정해집니다.");
+
+            move_cursor(43, 16);
+            printf("선택한 행동에 따라 ");
+
+            set_color(FONT_COLOR_RED);
+            printf("HP");
+
+            set_color(FONT_COLOR_WHITE);
+            printf("가 다르게 감소합니다.");
+
+            set_color(FONT_COLOR_YELLOW);
+            move_cursor(43, 17);
+            printf("Backspace");
+
+            set_color(FONT_COLOR_WHITE);
+            printf("를 눌러 메뉴로 돌아가시오");
+        }
+        if (Manual_page == 2)
+        {
+            move_cursor(0, 50);
+            printf("\033[1m이전장 (← , A)\033[0m");
+
+            move_cursor(60, 7);
+            printf("\033[1m키 설명\033[0m");
+            move_cursor(53, 12);
+            printf("W , ↑: 위로 이동");
+            move_cursor(53, 13);
+            printf("S , ↓: 밑으로 이동");
+            move_cursor(53, 14);
+            printf("A , ←: 왼쪽 선택");
+            move_cursor(53, 15);
+            printf("D , →: 오른쪽 선택");
+            move_cursor(53, 16);
+            printf("Enter : 선택");
+            move_cursor(53, 17);
+            printf("ESC : 게임 종료");
+            move_cursor(53, 18);
+            printf("Backspace : 뒤로 가기");
+        }
+
+        key = _getch(); 
+        switch (key)
+        {
+        case 'a':
+        case 75: // ←
+            if (Manual_page > 1)
+            {
+                Manual_page = Manual_page - 1;
+            }
+            break;
+        case 'd':
+        case 77: // →
+            if (Manual_page < 2)
+            {
+                Manual_page = Manual_page + 1;
+            }
+            break;
+
+        case 27: // ESC
             exit(0);
+            break;
         }
     }
 
     system("cls");
-
     return 0;
 }
 
@@ -345,8 +414,6 @@ int Gameover(void)
 
     exit(0);
 }
-
-
 
 void set_color(int code)
 {
