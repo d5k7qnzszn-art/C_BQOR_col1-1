@@ -50,7 +50,7 @@ typedef struct
 } Choice;
 
 // 선택지 목록 (여기에 100개까지 계속 추가하시면 됩니다)
-Choice choices[] = 
+Choice choices[] =
 {
     { {"  /\\_/\\  ", " ( o.o ) ", "  > ^ <  ", "         ", "         ", "         "}, "귀여운 길고양이를 쓰다듬는다.", 1, 5 },
     { {"   ___   ", "  / _ \\  ", " | (_) | ", "  \\___/  ", "         ", "         "}, "수상할 정도로 빨간 버튼을 누른다.", 3, 9 },
@@ -430,7 +430,8 @@ int Gamestart(void)
         // 2개의 중복되지 않는 랜덤 선택지 뽑기
         int left_idx = rand() % num_choices;
         int right_idx;
-        do {
+        do
+        {
             right_idx = rand() % num_choices;
         } while (left_idx == right_idx);
 
@@ -495,8 +496,10 @@ int Gamestart(void)
             }
             else if (key == 8) // Backspace
             {
+                system("cls");
                 return 0; // 메뉴로 돌아가기
             }
+
             else if (key == 27) // ESC
             {
                 exit(0); // 게임 강제 종료
@@ -533,15 +536,6 @@ int Gamestart(void)
     move_cursor(43, 18);
     printf("Backspace를 누르면 메뉴로 돌아갑니다.");
 
-    while (1)
-    {
-        key = _getch();
-        if (key == 8)
-        {
-            break;
-        }
-    }
-
     system("cls");
     return 0;
 }
@@ -571,6 +565,10 @@ int move_cursor(int x, int y)
 
 int main(void)
 {
+
+    // 가로 120칸, 세로 40칸으로 콘솔 창 크기 설정
+    system("mode con cols=120 lines=40");
+
     int gameStatus = 0;
 
     ShowLogo();
